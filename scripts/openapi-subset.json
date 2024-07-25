@@ -1134,11 +1134,13 @@
                     "score",
                     "type",
                     "entity",
+                    "group",
                     "label",
                     "name",
                     "entity_name",
                     "timestamp_created",
-                    "timestamp_last_updated"
+                    "timestamp_last_updated",
+                    "last_seen"
                 ],
                 "title": "SortOptions"
             },

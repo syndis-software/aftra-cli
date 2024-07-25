@@ -1,6 +1,6 @@
 module github.com/syndis-software/aftra-cli
 
-go 1.18
+go 1.22
 
 require (
 	github.com/oapi-codegen/runtime v1.1.1
