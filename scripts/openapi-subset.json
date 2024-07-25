@@ -84,6 +84,84 @@
                 }
             }
         },
+        "/api/companies/{company_pk}/opportunities/external/": {
+            "post": {
+                "tags": [
+                    "opportunities"
+                ],
+                "summary": "Create External Opportunity",
+                "operationId": "create_external_opportunity_api_companies__company_pk__opportunities_external__post",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    },
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "company_pk",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^Company-[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$",
+                            "example": "Company-8ccfcc01-da99-4f5a-8ad7-946d6a6f48f5"
+                        }
+                    },
+                    {
+                        "name": "parent_pk",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "identity",
+                        "in": "cookie",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateExternalOpportunity"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/companies/{parent_pk}/syndis-scans": {
             "get": {
                 "tags": [
@@ -536,8 +614,9 @@
                 "tags": [
                     "opportunities"
                 ],
-                "summary": "Search Opportunities",
+                "summary": "Search Opportunities  Deprecated",
                 "operationId": "search_opportunities_api_companies__company_pk__opportunities_v3_get",
+                "deprecated": true,
                 "security": [
                     {
                         "HTTPBearer": []
@@ -835,6 +914,22 @@
                         }
                     },
                     {
+                        "name": "name__exact",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "entity_name__exact",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "parent_pk",
                         "in": "query",
                         "required": false,
@@ -851,6 +946,361 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SearchedOpportunitiesResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "opportunities"
+                ],
+                "summary": "Search Opportunities",
+                "operationId": "search_opportunities_api_companies__company_pk__opportunities_v3_post",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    },
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "company_pk",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^Company-[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$",
+                            "example": "Company-8ccfcc01-da99-4f5a-8ad7-946d6a6f48f5"
+                        }
+                    },
+                    {
+                        "name": "text",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "start_from",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "default": 0,
+                            "title": "Start From"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 1000,
+                            "minimum": 1,
+                            "default": 50,
+                            "title": "Limit"
+                        }
+                    },
+                    {
+                        "name": "resolution",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/OpportunityResolution"
+                            }
+                        }
+                    },
+                    {
+                        "name": "score",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/OpportunityScore"
+                            }
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/OpportunityModelType"
+                            }
+                        }
+                    },
+                    {
+                        "name": "entity",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "group",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "label_set",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "label_set__exists",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "last_seen__lte",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "last_seen__gte",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "last_seen__lt",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "last_seen__gt",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "timestamp_created__lte",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "timestamp_created__gte",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "timestamp_created__lt",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "timestamp_created__gt",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "timestamp_last_updated__lte",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "timestamp_last_updated__gte",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "timestamp_last_updated__lt",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "timestamp_last_updated__gt",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "due_date__lte",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "due_date__gte",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "due_date__lt",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "due_date__gt",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "name__exact",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "entity_name__exact",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "parent_pk",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "identity",
+                        "in": "cookie",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/SearchBody"
+                                    }
+                                ],
+                                "default": {
+                                    "sort": [
+                                        {
+                                            "field": "score",
+                                            "order": "desc"
+                                        }
+                                    ]
+                                },
+                                "title": "Body"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successful Response",
@@ -962,6 +1412,38 @@
                     "score"
                 ],
                 "title": "CreateOpportunity"
+            },
+            "CreateExternalOpportunity": {
+                "properties": {
+                    "uid": {
+                        "type": "string",
+                        "title": "Uid"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "entity_name": {
+                        "type": "string",
+                        "title": "Entity Name"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    },
+                    "score": {
+                        "$ref": "#/components/schemas/OpportunityScore"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "uid",
+                    "name",
+                    "entity_name",
+                    "description",
+                    "score"
+                ],
+                "title": "CreateExternalOpportunity"
             },
             "HTTPValidationError": {
                 "properties": {
@@ -1132,13 +1614,15 @@
                 "enum": [
                     "resolution",
                     "score",
-                    "type",
+                    "sortable_type",
                     "entity",
+                    "group",
                     "label",
                     "name",
                     "entity_name",
                     "timestamp_created",
-                    "timestamp_last_updated"
+                    "timestamp_last_updated",
+                    "last_seen"
                 ],
                 "title": "SortOptions"
             },
@@ -1157,8 +1641,10 @@
                 "enum": [
                     "exposed_secret",
                     "exposed_service",
+                    "external_vulnerability",
                     "leaked_password",
                     "web_app_vulnerability",
+                    "wordpress_vulnerability",
                     "burp_vulnerability",
                     "suspicious_domain",
                     "greenbone_vulnerability",
@@ -1709,6 +2195,46 @@
                     "key"
                 ],
                 "title": "BlobSignedUploadURLResponse"
+            },
+            "SearchBody": {
+                "properties": {
+                    "sort": {
+                        "items": {
+                            "$ref": "#/components/schemas/SortOrder"
+                        },
+                        "type": "array",
+                        "title": "Sort",
+                        "default": [
+                            {
+                                "field": "score",
+                                "order": "desc"
+                            }
+                        ]
+                    }
+                },
+                "type": "object",
+                "title": "SearchBody"
+            },
+            "SortOrder": {
+                "properties": {
+                    "field": {
+                        "$ref": "#/components/schemas/SortOptions"
+                    },
+                    "order": {
+                        "type": "string",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "title": "Order",
+                        "default": "desc"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "field"
+                ],
+                "title": "SortOrder"
             }
         }
     }
