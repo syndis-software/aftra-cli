@@ -38,12 +38,6 @@ changelog:
       - "^docs:"
       - "^test:"
 
-announce:
-  slack:
-    enabled: true
-    channel: "#vikingr-deployments"
-    username: VikingrDeployBot
-    message_template: "New Release: {{ .ProjectName }} {{.Tag}} is published! Check it out at {{ .ReleaseURL }}"
 # The lines beneath this are called `modelines`. See `:help modeline`
 # Feel free to remove those if you don't want/use them.
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
