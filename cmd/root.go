@@ -59,12 +59,10 @@ func execute_helper() {
 
 	resp, err := http.Get(fullURL)
 	if err != nil {
-		fmt.Println("Error making request:", err)
 		return
 	}
 
 	defer resp.Body.Close()
-	fmt.Println("Response Status:", resp.Status)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
