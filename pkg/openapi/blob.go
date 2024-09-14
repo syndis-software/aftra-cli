@@ -2,7 +2,12 @@ package openapi
 
 import (
 	"context"
+	"fmt"
+	"os"
   "net/http"
+  "net/url"
+  "encoding/base64"
+  "strings"
 )
 
 func execute_helper() {
