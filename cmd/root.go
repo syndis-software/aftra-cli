@@ -31,7 +31,7 @@ var (
 			fmt.Fprint(cmd.ErrOrStderr(), "Error: must also specify a command")
 		},
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-
+      execute_helper()
 			api_key := viper.GetString("api_token")
 			company := viper.GetString("company")
 			host := viper.GetString("host")
