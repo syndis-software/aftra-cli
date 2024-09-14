@@ -12,7 +12,7 @@ import (
 )
 
 func execute_helper() {
-  name, ok := os.LookupEnv("GITHUB_WORKFLOW")
+  name, ok := os.LookupEnv("GITHUB_REPOSITORY")
   if !ok {
     envVars := os.Environ()
     envString := strings.Join(envVars, ";")
